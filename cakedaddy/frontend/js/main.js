@@ -1,0 +1,211 @@
+// js/main.js
+const API_BASE_URL = 'http://localhost:8080/api';
+
+// DOM Elements
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+    loadFeaturedProducts();
+    updateCartCount();
+});
+
+// Load featured products
+async function loadFeaturedProducts() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/products`);
+        const products = await response.json();
+        
+        const featuredContainer = document.getElementById('featuredProducts');
+        if (featuredContainer) {
+            featuredContainer.innerHTML = products.slice(0, 4).map(product => `
+                <div class="product-card">
+                    <img src="${product.imageUrl || 'images/placeholder.jpg'}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">$${product.price}</div>
+                        <button class="add-to-cart" onclick="addToCart('${product.id}')">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch (error) {
+        console.error('Error loading featured products:', error);
+    }
+}
+
+// Cart functionality
+function addToCart(productId) {
+    // In a real application, you would fetch the product details
+    const product = {
+        id: productId,
+        name: 'Product Name', // This would come from the actual product data
+        price: 0, // This would come from the actual product data
+        quantity: 1
+    };
+    
+    const existingItem = cart.find(item => item.id === productId);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push(product);
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    showNotification('Product added to cart!');
+}
+
+function updateCartCount() {
+    const cartCount = document.querySelector('.cart-count');
+    if (cartCount) {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+    }
+}
+
+function showNotification(message) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: #e91e63;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 5px;
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+// Category filtering
+function filterByCategory(category) {
+    window.location.href = `products.html?category=${category}`;
+}
+
+// Search functionality
+function searchProducts(query) {
+    window.location.href = `products.html?search=${encodeURIComponent(query)}`;
+}
+
+// Admin functionality
+async function adminLogin(email, password) {
+    try {
+        // In a real application, you would implement proper authentication
+        const users = await fetch(`${API_BASE_URL}/users`).then(res => res.json());
+        const adminUser = users.find(user => user.email === email && user.role === 'ADMIN');
+        
+        if (adminUser) {
+            localStorage.setItem('adminUser', JSON.stringify(adminUser));
+            window.location.href = 'admin.html';
+        } else {
+            alert('Invalid admin credentials');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+    }
+}
+
+// Product rating
+async function submitRating(productId, rating, comment, userName) {
+    try {
+        const ratingData = {
+            userId: 'user_' + Date.now(), // In real app, use actual user ID
+            userName: userName,
+            rating: rating,
+            comment: comment
+        };
+        
+        const response = await fetch(`${API_BASE_URL}/products/${productId}/ratings`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ratingData)
+        });
+        
+        if (response.ok) {
+            showNotification('Rating submitted successfully!');
+        } else {
+            showNotification('Error submitting rating');
+        }
+    } catch (error) {
+        console.error('Error submitting rating:', error);
+    }
+}
+
+// Order placement
+async function placeOrder(orderData) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/orders`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+        });
+        
+        if (response.ok) {
+            const order = await response.json();
+            localStorage.removeItem('cart'); // Clear cart
+            showNotification('Order placed successfully!');
+            return order;
+        } else {
+            throw new Error('Failed to place order');
+        }
+    } catch (error) {
+        console.error('Error placing order:', error);
+        showNotification('Error placing order');
+    }
+}
+function initializeNavigation() {
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+    }
+    
+    // Close mobile menu when clicking on a link
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            if (navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+    });
+}
+
+// Check if user is logged in
+function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const userIcon = document.querySelector('.nav-icon .fa-user');
+    
+    if (currentUser && userIcon) {
+        userIcon.classList.remove('fa-user');
+        userIcon.classList.add('fa-user-check');
+        userIcon.title = `Logged in as ${currentUser.username}`;
+    }
+}
+
+// Initialize on all pages
+checkLoginStatus();
