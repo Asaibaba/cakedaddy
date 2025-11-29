@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+
+  mongodb:
+    image: mongo:6
+    container_name: cakedaddy-mongo
+    environment:
+      MONGO_INITDB_DATABASE: cakedaddy
+      MONGO_INITDB_ROOT_USERNAME: cakedaddy
+      MONGO_INITDB_ROOT_PASSWORD: cakedaddy123
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - "27017:27017"
+
+  backend:
+    build: ./backend
+    container_name: cakedaddy-backend
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://cakedaddy:cakedaddy123@mongodb:27017/cakedaddy?authSource=cakedaddy
+      - LOGGING_LEVEL_ROOT=DEBUG
+      - LOGGING_LEVEL_COM_CAKEDADDY=DEBUG
+    depends_on:
+      - mongodb
+    ports:
+      - "8080:8080"
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: cakedaddy-frontend
+    ports:
+      - "3000:80"
+    restart: always
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
+

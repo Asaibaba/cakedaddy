@@ -1,5 +1,5 @@
 // js/main.js
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'http://backend:8080/api';
 
 // DOM Elements
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -209,3 +209,33 @@ function checkLoginStatus() {
 
 // Initialize on all pages
 checkLoginStatus();
+
+// ===========================
+// GOOGLE MAP POPUP MODAL
+// ===========================
+const mapOpenBtn = document.getElementById("openMap");
+const mapModal = document.getElementById("mapModal");
+const mapFrame = document.getElementById("mapFrame");
+const closeMapBtn = document.querySelector(".close-map");
+
+if (mapOpenBtn) {
+    mapOpenBtn.addEventListener("click", () => {
+        const addressQuery = "near+meeseva,+Dattatreya+Colony,+Yellamma+Banda,+Kukatpally,+Hyderabad,+Telangana+500072";
+        mapFrame.src = `https://www.google.com/maps?q=${addressQuery}&output=embed`;
+        mapModal.style.display = "flex";
+    });
+}
+
+if (closeMapBtn) {
+    closeMapBtn.addEventListener("click", () => {
+        mapModal.style.display = "none";
+        mapFrame.src = "";
+    });
+}
+
+window.addEventListener("click", (e) => {
+    if (e.target === mapModal) {
+        mapModal.style.display = "none";
+        mapFrame.src = "";
+    }
+});
