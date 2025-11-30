@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cakedaddy - Freshly Baked Happiness</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="/" class="nav-link">Cakedaddy</a>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/products.html" class="nav-link">Products</a>
+                <a href="/about.html" class="nav-link">About</a>
+                <a href="/contact.html" class="nav-link">Contact</a>
+                <div class="nav-icons">
+                    <a href="/cart" class="nav-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                    <a href="/login" class="nav-icon"><i class="fas fa-user"></i></a>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Freshly Baked Happiness</h1>
+            <p>Indulge in our delicious range of cakes, pastries, and baked goods made with love and the finest ingredients</p>
+            <button class="cta-button" onclick="location.href='products.html'">Shop Now</button>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Specialties</h2>
+                <p>Handcrafted with passion and the finest ingredients</p>
+            </div>
+            <div class="featured-layout">
+                <div class="featured-left" id="featuredCarousel">
+                    <!-- Scrolling images will be loaded here -->
+                </div>
+                <aside class="featured-right" id="featuredList">
+                    <!-- Bakery items list will be loaded here -->
+                </aside>
+            </div>
+            <div class="view-all">
+                <a href="products.html" class="btn btn-outline">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-title">
+                <h2>Browse Categories</h2>
+                <p>Explore our wide range of freshly baked delights</p>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card" onclick="filterByCategory('Cakes')">
+                    <div class="category-image">
+                        <img src="images/cake-category.jpg" alt="Cakes">
+                    </div>
+                    <h3>Cakes</h3>
+                </div>
+                <div class="category-card" onclick="filterByCategory('Pastries')">
+                    <div class="category-image">
+                        <img src="images/pastry-category.jpg" alt="Pastries">
+                    </div>
+                    <h3>Pastries</h3>
+                </div>
+                <div class="category-card" onclick="filterByCategory('Cookies')">
+                    <div class="category-image">
+                        <img src="images/cookie-category.jpg" alt="Cookies">
+                    </div>
+                    <h3>Cookies</h3>
+                </div>
+                <div class="category-card" onclick="filterByCategory('Breads')">
+                    <div class="category-image">
+                        <img src="images/bread-category.jpg" alt="Breads">
+                    </div>
+                    <h3>Breads</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Offer -->
+    <section class="special-offer">
+        <div class="container">
+            <h2>Weekend Special Offer</h2>
+            <p>Get 20% off on all cakes and pastries this weekend. Limited time offer!</p>
+            <div class="timer">
+                <div class="timer-item">
+                    <div class="timer-number" id="days">00</div>
+                    <div class="timer-label">Days</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-number" id="hours">00</div>
+                    <div class="timer-label">Hours</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-number" id="minutes">00</div>
+                    <div class="timer-label">Minutes</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-number" id="seconds">00</div>
+                    <div class="timer-label">Seconds</div>
+                </div>
+            </div>
+            <button class="cta-button" onclick="location.href='products.html'">Grab the Offer</button>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Our Customers Say</h2>
+                <p>Don't just take our word for it - hear from our satisfied customers</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "The chocolate fudge cake from Cakedaddy is absolutely divine! It was the highlight of my daughter's birthday party."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Priya Sharma</h4>
+                            <p>Hyderabad</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "I've tried many bakeries in the city, but Cakedaddy's croissants are in a league of their own. Flaky and buttery!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Rahul Verma</h4>
+                            <p>Kukatpally</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "Ordered a custom cake for my anniversary and it exceeded all expectations. Will definitely order again!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Anjali Patel</h4>
+                            <p>Gachibowli</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Cakedaddy</h3>
+                    <p>Freshly baked goods made with love and the finest ingredients.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/products.html">Products</a></li>
+                        <li><a href="/about.html">About</a></li>
+                        <li><a href="/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> near meeseva, Dattatreya Colony, Yellamma Banda, Kukatpally</p>
+                    <p><i class="fas fa-phone"></i> + 91 9908228612</p>
+                    <p><i class="fas fa-envelope"></i> cakedaddy365@gmail.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Cakedaddy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

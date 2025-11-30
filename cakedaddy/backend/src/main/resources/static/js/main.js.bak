@@ -220,8 +220,13 @@ const closeMapBtn = document.querySelector(".close-map");
 
 if (mapOpenBtn) {
     mapOpenBtn.addEventListener("click", () => {
-        const addressQuery = "near+meeseva,+Dattatreya+Colony,+Yellamma+Banda,+Kukatpally,+Hyderabad,+Telangana+500072";
-        mapFrame.src = `https://www.google.com/maps?q=${addressQuery}&output=embed`;
+        // Exact pin location coordinates
+        const lat = 17.50872;
+        const lng = 78.40758;
+
+        // Google Maps embed with pin
+        mapFrame.src = `https://www.google.com/maps?q=${lat},${lng}&z=18&output=embed`;
+
         mapModal.style.display = "flex";
     });
 }
@@ -239,3 +244,4 @@ window.addEventListener("click", (e) => {
         mapFrame.src = "";
     }
 });
+

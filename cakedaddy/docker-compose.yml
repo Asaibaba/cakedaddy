@@ -1,42 +1,24 @@
-version: "3.9"
-
+version: '3.8'
 services:
-
-  mongodb:
-    image: mongo:6
-    container_name: cakedaddy-mongo
-    environment:
-      MONGO_INITDB_DATABASE: cakedaddy
-      MONGO_INITDB_ROOT_USERNAME: cakedaddy
-      MONGO_INITDB_ROOT_PASSWORD: cakedaddy123
-    volumes:
-      - mongo_data:/data/db
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    ports:
-      - "27017:27017"
-
   backend:
     build: ./backend
-    container_name: cakedaddy-backend
+    ports:
+      - "8080:8080"  # Now serving both API and frontend on 8080
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://cakedaddy:cakedaddy123@mongodb:27017/cakedaddy?authSource=cakedaddy
-      - LOGGING_LEVEL_ROOT=DEBUG
-      - LOGGING_LEVEL_COM_CAKEDADDY=DEBUG
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/cakedaddy
     depends_on:
       - mongodb
-    ports:
-      - "8080:8080"
-    restart: always
+    # No need for volumes since frontend is bundled in the JAR
 
-  frontend:
-    build: ./frontend
-    container_name: cakedaddy-frontend
+  mongodb:
+    image: mongo:latest
     ports:
-      - "3000:80"
-    restart: always
-    depends_on:
-      - backend
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=cakedaddy
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
 volumes:
-  mongo_data:
-
+  mongodb_data:
